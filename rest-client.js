@@ -50,17 +50,17 @@ class DiscordRestClient
             }
             catch(err){
 		if(err.hasOwnProperty("response") && typeof err.response !== "undefined" &&  err.response.hasOwnProperty("status")){
-	                switch(err.response.status){
-	                    case 403:
-	                        throw new ERR_CLIENT_MISSING_ACCESS(url);
+            switch(err.response.status){
+                case 403:
+                    throw new ERR_CLIENT_MISSING_ACCESS(url);
 
-	                    case 404:
-	                        throw new ERR_RESOURCE_UNAVAILABLE(url);
+                case 404:
+                    throw new ERR_RESOURCE_UNAVAILABLE(url);
 
-	                    case 429:
-	                        let seconds = err.response.headers["retry-after"];
-	                        await sleep((seconds + this.ratelimit_delay) * 1000);
-	                        break;
+                case 429:
+                    let seconds = err.response.headers[RATELIMIT_KEY];
+                    await sleep((seconds + this.ratelimit_delay) * 1000);
+                    break;
 
 			    case 500:
 				throw new ERR_SERVER_INTERNAL_500(url);
