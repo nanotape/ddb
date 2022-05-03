@@ -13,6 +13,10 @@ router.get("/", queryParser, loadGuilds, respondGuilds);
 router.get("/:id", getGuild, sendSingleGuild);
 router.get("/:id/users", loadGuildUsers, utils.db.sendData);
 
+/*
+    Function: loadGuildUsers
+    Purpose:  Retrieve an array of users, and the latest alias they've used, who have sent messages in the specified guild
+*/
 async function loadGuildUsers(req, res, next)
 {
     try{

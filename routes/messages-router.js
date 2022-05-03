@@ -15,6 +15,10 @@ router.get("/:id/users", loadUserMentions, utils.db.sendData);
 router.get("/:id/roles", loadRoleMentions, utils.db.sendData);
 router.get("/:id/stickers", loadStickers, utils.db.sendData);
 
+/*
+    Function: loadUserMentions
+    Purpose:  Retrieve an array of the mentions in a message from the database
+*/
 async function loadUserMentions(req, res, next)
 {
     try{
@@ -31,6 +35,10 @@ async function loadUserMentions(req, res, next)
     }
 }
 
+/*
+    Function: loadRoleMentions
+    Purpose:  Retrieve an array of the role mentions in a messages from the database
+*/
 async function loadRoleMentions(req, res, next)
 {
     try{
@@ -45,6 +53,10 @@ async function loadRoleMentions(req, res, next)
     }
 }
 
+/*
+    Function: loadStickers
+    Purpose:  Retrieve an array of the unique stickers sent in a message
+*/
 async function loadStickers(req, res, next)
 {
     try{

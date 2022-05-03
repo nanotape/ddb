@@ -16,6 +16,10 @@ router.get("/:id/aliases", loadUserAliases, utils.db.sendData);
 router.get("/:id/accounts", loadUserAccounts, utils.db.sendData);
 router.get("/:id/guilds/:gid/roles", loadUserRoles, utils.db.sendData);
 
+/*
+    Function: loadUserRoles
+    Purpose:  Retrieve an array of all the roles that a user has
+*/
 async function loadUserRoles(req, res, next)
 {
     
@@ -33,6 +37,10 @@ async function loadUserRoles(req, res, next)
     }
 }
 
+/*
+    Function: loadUserGuilds
+    Purpose:  Retrieve an array of all the guilds that a user has sent messages in
+*/
 async function loadUserGuilds(req, res, next)
 {
     try{

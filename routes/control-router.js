@@ -40,12 +40,21 @@ function stopScrape(req, res, next)
     res.status(200).send();
 }
 
+/*
+    Function: updateGuilds
+    Purpose:  Retrieve the guilds that the account is a member of and cache their information
+*/
 async function updateGuilds(req, res, next)
 {
     req.app.locals.client_guilds = await req.app.locals.restClient.getClientGuilds();
     next();
 }
 
+/*
+    Function: getGuilds
+    Purpose:  Retrieve information from the database about the cached guilds that the account
+              is a member of for the control panel interface to render when loaded
+*/
 async function getGuilds(req, res, next)
 {
     req.guilds = req.app.locals.client_guilds;
@@ -61,6 +70,10 @@ async function getGuilds(req, res, next)
     next();
 }
 
+/*
+    Function: loadPanel
+    Purpose:  Render the control interface and send it off to the user
+*/
 function loadPanel(req, res, next)
 {
     res.render("pages/control", {
@@ -69,6 +82,13 @@ function loadPanel(req, res, next)
     });
 }
 
+/*
+    Function: insertUserAccounts
+    Purpose:  Take an array of user account objects and insert them into the database
+    in:       The database object
+    in:       The user ID that the accounts are linked to
+    in:       The array of user account objects
+*/
 async function insertUserAccounts(db, user_id, user_accounts)
 {
     for(let a of user_accounts){
@@ -78,6 +98,16 @@ async function insertUserAccounts(db, user_id, user_accounts)
     }
 }
 
+/*
+    Function: inserUserRoles
+    Purpose:  Take a user and the roles that have been attributed to them and insert the roles and their relations
+              to the user
+    in:       The database object
+    in:       The Discord rest client
+    in:       The guild ID that the roles are from
+    in:       The ID of the user which has the roles
+    in:       An array of role objects attribute to the specified user ID
+*/
 async function insertUserRoles(db, client, guild_id, user_id, roles)
 {
     for(let r of roles){
@@ -93,9 +123,16 @@ async function insertUserRoles(db, client, guild_id, user_id, roles)
     }
 }
 
+/*
+    Function: insertUser
+    Purpose:  Insert a user into the database
+    in:       The database object
+    in:       The ID of the user
+    in:       A boolean representing whether the user is a bot or not
+*/
 async function insertUser(db, user_id, bot)
 {
-    if(typeof bot === "undefined")
+    if(typeof bot !== "boolean")
         bot = false;
     
     await db.run("insert or ignore into users values (?, ?)", [user_id, bot]);
@@ -120,10 +157,11 @@ async function insertAlias(db, username, discriminator)
 
 /*
     Function: upsertAliasRelation
-    Purpose:
-    in:
-    in:
-    in:
+    Purpose:  Insert a relation between a user and alias which both already exist in the database.
+              If the relation already exists, update the time of which the user was last seen using that alias
+    in:       The database object
+    in:       The user ID
+    in:       The alias ID
 */
 async function upsertAliasRelation(db, user_id, alias_id)
 {
@@ -133,10 +171,11 @@ async function upsertAliasRelation(db, user_id, alias_id)
 
 /*
     Function: upsertEmoji
-    Purpose:  
-    in:
-    in:
-    in:
+    Purpose:  Insert an emoji into the database. If the emoji already exists update its name just in case it's changed in the time it was
+              last recorded
+    in:       The database object
+    in:       The emoji object
+    in:       The ID of the guild the emoji is from
 */
 async function upsertEmoji(db, data, guild_id=null)
 {
@@ -150,10 +189,10 @@ async function upsertEmoji(db, data, guild_id=null)
 
 /*
     Function: upsertSticker
-    Purpose:
-    in:
-    in:
-    in:
+    Purpose:  Insert a sticker into the database. If the sticker already exists update its name
+    in:       The database object
+    in:       The sticker object
+    in:       The ID of the guild the sticker is from
 */
 async function upsertSticker(db, data, guild_id=null)
 {
@@ -167,9 +206,9 @@ async function upsertSticker(db, data, guild_id=null)
 
 /*
     Function: upsertGuild
-    Purpose:
-    in:
-    in:
+    Purpose:  Insert a guild into the database. If it already exists update its variable attributes which may change over time
+    in:       The database object
+    in:       The guild data object
 */
 async function upsertGuild(db, guild_data)
 {
@@ -190,7 +229,9 @@ async function upsertGuild(db, guild_data)
 
 /*
     Function: upsertChannel
-    Purpose:  Upsert a channel into the database
+    Purpose:  Insert or update attribute of a channel into the database
+    in:       The database object
+    in:       The channel data object
 */
 async function upsertChannel(db, channel_data)
 {
@@ -224,6 +265,13 @@ async function upsertChannel(db, channel_data)
                   });
 }
 
+/*
+    Function: upsertRole
+    Purpose:  Insert a role into the database. If it already exists update its changeable attributes
+    in:       The database object
+    in:       The role data object
+    in:       The ID of the guild the role is from
+*/
 async function upsertRole(db, role, guild_id)
 {
     await db.run("insert into roles values ($id, $guild, $name, $perms, $ment) on conflict (id) \
@@ -237,6 +285,13 @@ async function upsertRole(db, role, guild_id)
                   });
 }
 
+/*
+    Function: verifyChannelAccess
+    Purpose:  Check to see if the client has access to a channel. (This is important because hidden or deleted channels 
+              with varying perms can be seen be everybody)
+    in:       The Discord rest client
+    in:       The ID of the channel to check
+*/
 async function verifyChannelAccess(client, channel_id)
 {
     try{
@@ -248,11 +303,23 @@ async function verifyChannelAccess(client, channel_id)
     }
 }
 
+/*
+    Function: getLastMessageID
+    Purpose:  Get the ID of the last message sent in a channel
+    in:       The database object
+    in:       The ID of the channe
+*/
 async function getLastMessageID(db, channel_id)
 {
     return (await db.get("select max(id) as id from messages where channel_id = ?", [channel_id])).id;
 }
 
+/*
+    Function: upsertUserDetail
+    Purpose:  Take a user data object and insert the user itself while also upserting the user's aliases
+    in:       The database object
+    in:       The user data object
+*/
 async function upsertUserDetails(db, user)
 {
     await insertUser(db, user.id, user.bot);
@@ -260,6 +327,13 @@ async function upsertUserDetails(db, user)
     await upsertAliasRelation(db, user.id, alias_id);
 }
 
+/*
+    Function: insertAttachment
+    Purpose:  Insert an attachment of a message into the database
+    in:       The database object
+    in:       The attachment data object
+    in:       The ID of the message the attachment was from
+*/
 async function insertAttachment(db, attachment, message_id)
 {
     let filetype = null;
@@ -279,6 +353,19 @@ async function insertAttachment(db, attachment, message_id)
                   ]);
 }
 
+/*
+    Function: insertMessage
+    Purpose:  Insert a message into the database. Since this project mainly bases around Discord's rest API
+              this function takes care of updating various user attributes too if so desired as message data
+              contains lots of extra information in it. Looking back, this was a bad decision and the functionalities
+              should definitely be separated
+    in:       The database object
+    in:       The rest client
+    in:       The message data object
+    in:       The ID of the guild the message is from
+    in:       Whether to update the author's linked accounts when inserting
+    in:       Whether to update the author's guild roles when inserting
+*/
 async function insertMessage(db, client, message, guild_id, update_accounts=false, update_roles=false)
 {
     let author = message.author;
@@ -382,11 +469,11 @@ async function insertMessage(db, client, message, guild_id, update_accounts=fals
 
 /*
     Function: scrapeMessages
-    Purpose:
-    in:
-    in:
-    in:
-    in:
+    Purpose:  Scrape messages from a specified channel and insert them into the database
+    in:       The database object
+    in:       The Discord rest client
+    in:       The ID of the channel to scrape
+    in:       The express request object so that app locals can be accessed
 */
 async function scrapeMessages(db, client, channel_id, guild_id, req)
 {
@@ -430,6 +517,11 @@ function verifyGuild(req, res, next)
     res.status(404).send();
 }
 
+/*
+    Function: scrape
+    Purpose:  Sets the scraping status of the program and starts scraping the specified guild before
+              sending back a response to tell the client that things are underway
+*/
 function scrape(req, res, next)
 {
     if(!req.app.locals.scrape_status.scraping){
@@ -445,6 +537,7 @@ function scrape(req, res, next)
 
 /*
     Function: scrapeGuild
+    Purpose:  Scrape the guild specified by the client using the ID parameter specified in the request URL
 */
 async function scrapeGuild(req)
 {

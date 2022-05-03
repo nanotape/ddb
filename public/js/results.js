@@ -2,13 +2,19 @@ const MAX_LIMIT = 50;
 
 /*
     Function: capitalize
-    Purpose:  Capitalize the first character of a string
+    Purpose:  Capitalize the first character of a string (why is JS like this)
+    return:   The capitalized string
 */
 function capitalize(text)
 {
-    return text.replace(/^./g, (c) => c.toUpperCase());
+    return text.replace(/^\w/g, (c) => c.toUpperCase());
 }
 
+/*
+    Function: getID
+    Purpose:  Retrieve the numeric ID parameter located at the end of the URL
+    return:   A string containing the ID
+*/
 export function getID()
 {
     return window.location.pathname.match(/(?<=\/)[0-9]*$/g);
@@ -80,10 +86,11 @@ export function prevNextButtons(tableDiv, entity, query=null, path="")
 
 /*
     Function: createTable
-    Purpose:  Pain. I know it's bad trust me
-    in:
-    in:
-    in:
+    Purpose:  Pain. I know it's bad, trust me. Takes the type of entity that needs to be displayed as well as
+              a collection of them and creates an html table
+    in:       The type of entity being displayed in the table
+    in:       The array of entities to display
+    return:   The parent element of the table
 */
 export function createTable(type, data)
 {
@@ -202,6 +209,15 @@ export function createTable(type, data)
 
     return table;
 }
+
+/*
+    Function: search
+    Purpose:  Send a query for a specific entity to the database and display the results in a table
+    in:       The div element which will contain the table once returned
+    in:       The entity type to search for
+    in:       An object of query parameters to narrow the search
+    in:       The parent path which the request should be sent to. e.g. {path}/users?id=123
+*/
 
 export function search(tableDiv, entity, query=null, path="")
 {

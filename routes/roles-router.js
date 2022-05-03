@@ -13,6 +13,10 @@ router.get("/", queryParser, loadRoles, respondRoles);
 router.get("/:id", getRole, sendSingleRole);
 router.get("/:id/users", loadRoleUsers, utils.db.sendData);
 
+/*
+    Function: loadRoleUsers
+    Purpose:  Retrieve an array of the users which have the role specified in the URL parameter
+*/
 async function loadRoleUsers(req, res, next)
 {
     try{
