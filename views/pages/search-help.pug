@@ -1,0 +1,111 @@
+html
+    head
+        link(rel="stylesheet" href="/css/results.css")
+        title Search Help
+    
+    body
+        include ../partials/header
+        div#main
+            h1 Search Help
+            p Below are tables specifying the tags for all of the searchable entities on the search page
+            p The format for using a tag is tag:value, where pairs are delimited by spaces.
+            p If you want to look for text with spaces, simply use underscores instead. If you want to look for underscores you can escape them with a backslash.
+
+            table(class="results-table")
+                caption Tags usable for all entities
+                tr
+                    th Tag
+                    th Quantity
+                tr
+                    td id
+                    td N
+                tr
+                    td offset
+                    td 1
+                tr
+                    td limit
+                    td 1
+            
+            table(class="results-table")
+                caption Attachments
+                tr
+                    th Tag
+                    th Quantity
+                tr
+                    td message_id
+                    td N
+                tr
+                    td filename
+                    td N
+                tr
+                    td filetype
+                    td N
+
+            table(class="results-table")
+                caption Messages
+                tr
+                    th Tag
+                    th Quantity
+                tr
+                    td author_id
+                    td N
+                tr
+                    td channel_id
+                    td N
+                tr
+                    td content
+                    td N
+                tr
+                    td after
+                    td 1
+                tr
+                    td before
+                    td 1
+            
+            table(class="results-table")
+                caption Guilds
+                tr
+                    th Tag
+                    th Quantity
+                tr
+                    td name
+                    td N
+                tr
+                    td owner_id
+                    td N
+            
+            table(class="results-table")
+                caption Users
+                tr
+                    th Tag
+                    th Quantity
+                tr
+                    td username
+                    td N
+                tr
+                    td discriminator
+                    td N
+            
+            table(class="results-table")
+                caption Channels
+                tr
+                    th Tag
+                    th Quantity
+                tr
+                    td guild_id
+                    td N
+                tr
+                    td name
+                    td N
+            
+            table(class="results-table")
+                caption Roles
+                tr
+                    th Tag
+                    th Quantity
+                tr
+                    td name
+                    td N
+                tr
+                    td guild_id
+                    td N

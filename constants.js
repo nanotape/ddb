@@ -1,0 +1,228 @@
+function createEnum(names)
+{
+    let a = {};
+    let b = 0;
+    names.forEach((val) => {
+        a[val] = b++;
+    });
+    return Object.freeze(a);
+}
+
+const GUILDS_EVENTS = createEnum([
+    "GUILD_CREATE",
+    "GUILD_UPDATE",
+    "GUILD_DELETE",
+    "GUILD_ROLE_CREATE",
+    "GUILD_ROLE_UPDATE",
+    "GUILD_ROLE_DELETE",
+    "CHANNEL_CREATE",
+    "CHANNEL_UPDATE",
+    "CHANNEL_DELETE",
+    "CHANNEL_PINS_UPDATE",
+    "THREAD_CREATE",
+    "THREAD_UPDATE",
+    "THREAD_DELETE",
+    "THREAD_LIST_SYNC",
+    "THREAD_MEMBER_UPDATE",
+    "THREAD_MEMBERS_UPDATE",
+    "STAGE_INSTANCE_CREATE",
+    "STAGE_INSTANCE_UPDATE",
+    "STAGE_INSTANCE_DELETE"
+]);
+
+const GUILD_MEMBERS_EVENTS = createEnum([
+    "GUILD_MEMBER_ADD",
+    "GUILD_MEMBER_UPDATE",
+    "GUILD_MEMBER_REMOVE",
+    "THREAD_MEMBERS_UPDATE"
+]);
+
+const GUILD_BANS_EVENTS = createEnum([
+    "GUILD_BAN_ADD",
+    "GUILD_BAN_REMOVE"
+]);
+
+const GUILD_EMOJIS_AND_STICKERS_EVENTS = createEnum([
+    "GUILD_EMOJIS_UPDATE",
+    "GUILD_STICKERS_UPDATE"
+]);
+
+const GUILD_INTEGRATIONS_EVENTS = createEnum([
+    "GUILD_INTEGRATIONS_UPDATE",
+    "INTEGRATION_CREATE",
+    "INTEGRATION_UPDATE",
+    "INTEGRATION_DELETE"
+]);
+
+const GUILD_WEBHOOKS_EVENTS = createEnum([
+    "WEBHOOKS_UPDATE"
+]);
+
+const GUILD_INVITES_EVENTS = createEnum([
+    "INVITE_CREATE",
+    "INVITE_DELETE"
+]);
+
+const GUILD_VOICE_STATES_EVENTS = createEnum([
+    "VOICE_STATE_UPDATE"
+]);
+
+const GUILD_PRESENCES_EVENTS = createEnum([
+    "PRESENCE_UPDATE"
+]);
+
+const GUILD_MESSAGES_EVENTS = createEnum([
+    "MESSAGE_CREATE",
+    "MESSAGE_UPDATE",
+    "MESSAGE_DELETE",
+    "MESSAGE_BULK_DELETE"
+]);
+
+const GUILD_MESSAGE_REACTIONS_EVENTS = createEnum([
+    "MESSAGE_REACTION_ADD",
+    "MESSAGE_REACTION_REMOVE",
+    "MESSAGE_REACTION_REMOVE_ALL",
+    "MESSAGE_REACTION_REMOVE_EMOJI"
+]);
+
+const DIRECT_MESSAGE_TYPING_EVENTS = createEnum([
+    "TYPING_START"
+]);
+
+const DIRECT_MESSAGES_EVENTS = createEnum([
+    "MESSAGE_CREATE",
+    "MESSAGE_UPDATE",
+    "MESSAGE_DELETE",
+    "CHANNEL_PINS_UPDATE"
+]);
+
+const DIRECT_MESSAGE_REACTIONS_EVENTS = createEnum([
+    "MESSAGE_REACTION_ADD",
+    "MESSAGE_REACTION_REMOVE",
+    "MESSAGE_REACTION_REMOVE_ALL",
+    "MESSAGE_REACTION_REMOVE_EMOJI"
+]);
+
+const GUILD_SCHEDULED_EVENTS_EVENTS = createEnum([
+    "GUILD_SCHEDULED_EVENT_CREATE",
+    "GUILD_SCHEDULED_EVENT_UPDATE",
+    "GUILD_SCHEDULED_EVENT_DELETE",
+    "GUILD_SCHEDULED_EVENT_USER_ADD",
+    "GUILD_SCHEDULED_EVENT_USER_REMOVE"
+]);
+
+const GUILD_MESSAGE_TYPING_EVENTS = createEnum([
+    "TYPING_START"
+]);
+
+const CHANNEL_TYPES = Object.freeze({
+    GUILD_TEXT: 0,
+    DM: 1,
+    GUILD_VOICE: 2,
+    GROUP_DM: 3,
+    GUILD_CATEGORY: 4,
+    GUILD_NEWS: 5,
+    GUILD_STORE: 6,
+    GUILD_NEWS_THREAD: 10,
+    GUILD_PUBLIC_THREAD: 11,
+    GUILD_PRIVATE_THREAD: 12,
+    GUILD_STAGE_VOICE: 13
+});
+
+const INTENTS = Object.freeze({
+    GUILDS: {
+        b: 0,
+        e: GUILDS_EVENTS
+    },
+    GUILD_MEMBERS: {
+        b: 1,
+        e: GUILD_MEMBERS_EVENTS
+    },
+    GUILD_BANS: {
+        b: 2,
+        e: GUILD_BANS_EVENTS
+    },
+    GUILD_EMOJIS_AND_STICKERS: {
+        b: 3,
+        e: GUILD_EMOJIS_AND_STICKERS_EVENTS
+    },
+    GUILDS_INTEGRATIONS: {
+        b: 4,
+        e: GUILD_INTEGRATIONS_EVENTS
+    },
+    GUILD_WEBHOOKS: {
+        b: 5,
+        e: GUILD_WEBHOOKS_EVENTS
+    },
+    GUILD_INVITES: {
+        b: 6,
+        e: GUILD_INVITES_EVENTS
+    },
+    GUILD_VOICE_STATES: {
+        b: 7,
+        e: GUILD_VOICE_STATES_EVENTS
+    },
+    GUILD_PRESENCES: {
+        b: 8,
+        e: GUILD_PRESENCES_EVENTS
+    },
+    GUILD_MESSAGES: {
+        b: 9,
+        e: GUILD_MESSAGES_EVENTS
+    },
+    GUILD_MESSAGE_REACTIONS: {
+        b: 10,
+        e: GUILD_MESSAGE_REACTIONS_EVENTS
+    },
+    GUILD_MESSAGE_TYPING: {
+        b: 11,
+        e: GUILD_MESSAGE_TYPING_EVENTS
+    },
+    DIRECT_MESSAGES: {
+        b: 12,
+        e: DIRECT_MESSAGES_EVENTS
+    },
+    DIRECT_MESSAGE_REACTIONS: {
+        b: 13,
+        e: DIRECT_MESSAGE_REACTIONS_EVENTS
+    },
+    DIRECT_MESSAGE_TYPING: {
+        b: 14,
+        e: DIRECT_MESSAGE_TYPING_EVENTS
+    },
+    GUILD_SCHEDULED_EVENTS: {
+        b: 16,
+        e: GUILD_SCHEDULED_EVENTS_EVENTS
+    }
+});
+
+//To provide O(1) lookup as to whether a type of event actually exists
+let a = new Set();
+Object.values(INTENTS).forEach((i) => {
+    Object.keys(i.e).forEach((e) => {
+        a.add(e);
+    });
+});
+const EVENTS = createEnum(a);
+
+module.exports = {
+    GUILDS_EVENTS,
+    GUILD_MEMBERS_EVENTS,
+    GUILD_BANS_EVENTS,
+    GUILD_EMOJIS_AND_STICKERS_EVENTS,
+    GUILD_INTEGRATIONS_EVENTS,
+    GUILD_WEBHOOKS_EVENTS,
+    GUILD_VOICE_STATES_EVENTS,
+    GUILD_PRESENCES_EVENTS,
+    GUILD_MESSAGES_EVENTS,
+    GUILD_MESSAGE_REACTIONS_EVENTS,
+    DIRECT_MESSAGE_TYPING_EVENTS,
+    DIRECT_MESSAGES_EVENTS,
+    DIRECT_MESSAGE_REACTIONS_EVENTS,
+    GUILD_SCHEDULED_EVENTS_EVENTS,
+    GUILD_MESSAGE_TYPING_EVENTS,
+    GUILD_INVITES_EVENTS,
+    CHANNEL_TYPES,
+    INTENTS,
+    EVENTS
+};

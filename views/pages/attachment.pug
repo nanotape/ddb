@@ -1,0 +1,18 @@
+html
+    head
+        title Attachment #{attachment.id}
+
+    body
+        include ../partials/header
+        div#main
+            div#info
+                p ID: #{attachment.id}
+                p Message ID: 
+                    a(href="/messages/" + attachment.message_id)= attachment.message_id
+                p Filename: #{attachment.filename}
+                p Size: #{attachment.size} bytes
+                p URL: 
+                    a(href=attachment.url)= attachment.url
+                p Proxy URL: 
+                    a(href=attachment.proxy_url)= attachment.proxy_url
+                p Filetype: #{attachment.filetype}

@@ -1,0 +1,20 @@
+html
+    head
+        link(rel="stylesheet" href="/css/results.css")
+        title Home
+    
+    body
+        include ../partials/header
+        div#main
+            h1#title Discord DB
+
+            table(class="results-table")
+                caption Table Stats
+                tr
+                    th Table
+                    th Row Count
+                - var i = 0;
+                while i < rows.length
+                    tr
+                        td= rows[i][0]
+                        td= rows[i++][1]

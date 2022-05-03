@@ -1,0 +1,27 @@
+html
+    head
+        link(rel="stylesheet" href="/css/results.css")
+        title User #{user.id}
+
+    body
+        include ../partials/header
+        div#main
+            div#info
+                p ID: #{user.id}
+                p Bot: #{user.bot}
+
+            div#aliases
+
+            div#guilds
+
+            div#connected-accounts
+
+            div#roles
+                h2 Role Search
+                select#guild-select
+                |
+                button#search-button Get Roles
+
+                div#role-results
+
+        script(type="module" src="/js/user.js")

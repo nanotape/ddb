@@ -1,0 +1,14 @@
+- let emoji = custom_emoji;
+html
+    head
+        link(rel="stylesheet" href="/css/results.css")
+        title Emoji: #{emoji.id}
+
+    body
+        include ../partials/header
+        div#main
+            div#info
+                p ID: #{emoji.id}
+                p Guild ID: 
+                    a(href="/guilds/" + emoji.guild_id)= emoji.guild_id
+                p Name: #{emoji.name}

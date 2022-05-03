@@ -1,0 +1,15 @@
+{
+    "token": "",
+    "base_api_url": "https://discord.com/api",
+    "api_version": 9,
+    "request_delay": 0.006,
+    "ratelimit_delay": 1,
+    "retry_count": -1,
+    "db_schemas_path": "db_schemas",
+    "db_path": "data/discord.db",
+    "port": 3000,
+    "paths_relative": true,
+    "overwrite": false,
+    "log_paths_relative": true,
+    "log_path": "logs"
+}

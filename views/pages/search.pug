@@ -1,0 +1,28 @@
+html
+    head
+        link(rel="stylesheet" href="/css/search.css")
+        link(rel="stylesheet" href="/css/results.css")
+        title Search
+    
+    body
+        include ../partials/header
+        div#main
+            h1#title Search
+            a#help-link(href="/search/help") Search Guide
+            div#search
+                select#entity-select
+                    option Messages
+                    option Guilds
+                    option Channels
+                    option Users
+                    option Attachments
+                    option Emojis
+                    option Stickers
+                |
+                input#search-input(type="text")
+                |
+                input#search-button(type="button" value="search")
+
+            div#results
+        
+        script(type="module" src="/js/search.js")

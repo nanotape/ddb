@@ -1,0 +1,38 @@
+html
+    head
+        link(rel="stylesheet" href="/css/results.css")
+        title Control Panel
+
+    body
+        include ../partials/header
+        div#main
+            h1#title Control Panel
+            button#request-guilds Update Guilds
+            if status.scraping
+                h3 Scrape Status
+                p Guild: 
+                    a(href="/guilds/" + status.guild_id)= status.guild_id
+                p Channel: 
+                    a(href="/channels/" + status.channel_id)= status.channel_id
+
+                button#skip Skip Channel
+                button#stop Stop Scrape
+
+            table(class="results-table")
+                caption Client Guilds
+                    tr
+                        th ID
+                        th Name
+                        th Last Scrape Started
+                        th
+
+                each guild in guilds
+                    tr
+                        td 
+                            a(href="/guilds/" + guild.id)= guild.id
+                        td= guild.name
+                        td= guild.last_scraped
+                        td
+                            button(value=guild.id class="scrape-button") Scrape Info
+            
+        script(src="/js/control.js")

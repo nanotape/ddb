@@ -1,0 +1,13 @@
+html
+    head
+        link(rel="stylesheet" href="/css/results.css")
+        title Sticker: #{sticker.id}
+
+    body
+        include ../partials/header
+        div#main
+            div#info
+                p ID: #{sticker.id}
+                p Guild ID: 
+                    a(href="/guilds/" + sticker.guild_id)= sticker.guild_id
+                p Name: #{sticker.name}

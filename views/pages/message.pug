@@ -1,0 +1,35 @@
+html
+    head
+        link(rel="stylesheet" href="/css/results.css")
+        title Message #{message.id}
+
+    body
+        include ../partials/header
+        div#main
+            div#info
+                p ID: #{message.id}
+                p Author ID: 
+                    a(href="/users/" + message.author_id)= message.author_id
+                p Channel ID: 
+                    a(href="/channels/" + message.channel_id)= message.channel_id
+                p Content: #{message.content}
+                p Timestamp: #{message.timestamp}
+                if message.edit_timestamp !== null
+                    p Edit Timestamp: #{message.edit_timestamp}
+                p Mention Everyone: #{message.mention_everyone}
+                p Pinned: #{message.pinned}
+                if message.referenced_message_id !== null
+                    p Reply to: 
+                        a(href="/messages/" + message.referenced_message_id)= message.referenced_message_id
+
+            div#attachments
+
+            div#stickers
+
+            div#mentions
+                h3 Mentions
+                div#user-mentions
+
+                div#role-mentions
+        
+        script(type="module" src="/js/message.js")

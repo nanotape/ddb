@@ -1,0 +1,28 @@
+html
+    head
+        link(rel="stylesheet" href="/css/results.css")
+        title Channel #{channel.id}
+
+    body
+        include ../partials/header
+        div#main
+            div#info
+                p ID: #{channel.id}
+                p Guild ID: 
+                    a(href="/guilds/" + channel.guild_id)= channel.guild_id
+                p Name: #{channel.name}
+
+                if channel.topic !== null
+                    p Topic: #{channel.topic}
+                
+                if channel.parent_id !== null
+                    p Parent Message ID: 
+                        a(href="/messages/" + channel.parent_id)= channel.parent_id
+                    p Thread Owner ID: 
+                        a(href="/users/" + channel.owner_id)= channel.owner_id
+
+                p#channel-type(value=channel.type) Channel Type: #{channel.type}
+
+            div#messages
+
+        script(type="module" src="/js/channel.js")

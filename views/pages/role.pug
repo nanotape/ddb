@@ -1,0 +1,19 @@
+html
+    head
+        link(rel="stylesheet" href="/css/results.css")
+        title Role: #{role.id}
+
+    body
+        include ../partials/header
+        div#main
+            div#info
+                p ID: #{role.id}
+                p Guild ID: 
+                    a(href="/guilds/" + role.guild_id) #{role.guild_id}
+                p Name: #{role.name}
+                p Permissions: #{role.permissions}
+                p Mentionable: #{role.mentionable}
+
+            div#users
+
+        script(type="module" src="/js/role.js")

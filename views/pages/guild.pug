@@ -1,0 +1,31 @@
+html
+    head
+        link(rel="stylesheet" href="/css/results.css")
+        title Guild #{guild.id}
+
+    body
+        include ../partials/header
+        div#main
+            div#info
+                p ID: #{guild.id}
+                p Name: #{guild.name}
+                p Description: #{guild.description}
+                p Owner ID:
+                    a(href="/users/" + guild.owner_id)= guild.owner_id
+                p Region: #{guild.region}
+                p Verification Level: #{guild.verification_level}
+                p Explicit Content Filter: #{guild.explicit_content_filter}
+                p NSFW: #{guild.nsfw}
+                p Preferred Locale: #{guild.preferred_locale}
+
+            div#users
+
+            div#channels
+
+            div#roles
+
+            div#stickers
+
+            div#emojis
+
+        script(type="module" src="/js/guild.js")
