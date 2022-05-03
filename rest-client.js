@@ -31,6 +31,7 @@ class DiscordRestClient
         in:       The HTTP method to use for the request
         in:       The URL to send the request to
         in:       An object containing the query parameters in the URL
+        return:   An HTTP response object
     */
     async #request(method, url, params)
     {
@@ -82,16 +83,14 @@ class DiscordRestClient
 
     /*
         Function: getChannelMessags
-        Purpose:
-        in:
-        in:
-        in:
-        in:
-        in:
-        return:
+        Purpose:  Get messages from a channel
+        in:       The ID of the channel
+        in:       The max number of messages to retrieve
+        in:       Get messages after this message ID
+        in:       Get messages before this message ID
+        in:       Get messages around this message ID
+        return:   An array of message objects
     */
-    //* NOTE *//  Make sure to implement functionality so that if a user requests more than MAX_OFFSET
-    //        //  then the program will automatically handle retrieving more
     async getChannelMessages(id, {limit=50, after=null, before=null, around=null})
     {
         return await this.#get(path.join("channels", id, "messages"), {
@@ -157,11 +156,22 @@ class DiscordRestClient
         return await this.#get(path.join("guilds", id, "messages/search"), options);
     }
 
+    /*
+        Function: getDiscoverableGuilds
+        Purpose:  Get a bunch of random public guild descriptions sorted by category
+        in:       The number of categories to find guilds in
+    */
     async getDiscoverableGuilds(categories=5)
     {
         return await this.#get("discoverable-guilds", {categories: categories});
     }
 
+    /*
+        Function: getGuildCategories
+        Purpose:  Retrieve all the different categories of public guilds
+        in:       The locale used by the guild
+        in:       TBD
+    */
     async getGuildCategories(locale="en-US", primary_only=false)
     {
         return await this.#get("discovery/categories", {
@@ -170,6 +180,12 @@ class DiscordRestClient
         });
     }
 
+    /*
+        Function: getGuildRecommendations
+        Purpose:  Get a bunch of guild recommendations from Discord based on the account being used
+        in:       Whether the recommendations should be personalized based on the account's activity
+        in:       The client type (purpose TBD)
+    */
     async getGuildRecommendations(personalization_disabled=true, client_type=3)
     {
         return (await this.#get("guild-recommendations", {
@@ -178,6 +194,12 @@ class DiscordRestClient
         })).recommended_guilds;
     }
 
+    /*
+        Function: getUserProfile
+        Purpose:  Retrieve an object containing information about the specified user
+        in:       The user's ID
+        in:       The ID of the guild that is mutually joined by the account and the user being requested
+    */
     async getUserProfile(user_id, guild_id)
     {
         return await this.#get(path.join("users", user_id, "profile"), {
@@ -186,30 +208,56 @@ class DiscordRestClient
         });
     }
 
+    /*
+        Function: getClientInfo
+        Purpose:  Retrieve an object containing profile information about the account being used
+    */
     async getClientInfo()
     {
         return await this.#get("users/@me");
     }
 
+    /*
+        Function: getClientGuilds
+        Purpose:  Retrieve an array containing guild info objects for all the guilds that the account is a member of
+    */
     async getClientGuilds()
     {
         return await this.#get("users/@me/guilds");
     }
 
+    /*
+        Function: getSticker
+        Purpose:  Retrieve a sticker data object
+        in:       The sticker's ID
+    */
     async getSticker(id)
     {
         return await this.#get(path.join("stickers", id));
     }
 
+    /*
+        Function: getStickerGuild
+        Purpose:  Retrieve information about the guild that a sticker is from
+        in:       The sticker's ID
+    */
     async getStickerGuild(id)
     {
         return await this.#get(path.join("stickers", id, "guild"));
     }
 
-    async getMessageReactions(channel_id, message_id, emoji_data, count)
+    /*
+        Function: getMessageReactions
+        Purpose:  Get information about the reactions made by users with a specific emoji on a message
+        in:       The channel ID that the message is within
+        in:       The message's ID
+        in:       The emoji object for which reaction information is being retrieved
+        in:       The number of users to retrieve reaction information for
+        return:   An array of user IDs which reaction to that message with the specified emoji
+    */
+    async getMessageReactions(channel_id, message_id, emoji_data, count, last_id=0)
     {
         const MAX_LIMIT = 100;
-        let last_id = 0;
         let results = [];
         let emoji = encodeURIComponent(`${emoji_data.name}:${emoji_data.id}`);
         let path = path.join("channels", channel_id, "messages", message_id, "reactions", emoji);

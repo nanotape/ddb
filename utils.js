@@ -235,7 +235,7 @@ function createIntentSignature(intents)
 
 /*
     Function: createNonce
-    Purpose:  Create a pseudo-unique 32 byte
+    Purpose:  Create a pseudo-unique 32 byte string
     return:
 */
 function createNonce()
