@@ -9,7 +9,5 @@
     "db_path": "data/discord.db",
     "port": 3000,
     "paths_relative": true,
-    "overwrite": false,
-    "log_paths_relative": true,
-    "log_path": "logs"
+    "overwrite": false
 }
